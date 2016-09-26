@@ -1,0 +1,66 @@
+hash: bb703c247363a66e2271cda67d4de31ea955d218f92a124d355435120999a207
+updated: 2016-09-28T15:06:51.591049649+09:00
+imports:
+- name: github.com/azr/backoff
+  version: 53511d3c733003985b0b76f733df1f4d0095ee6a
+- name: github.com/ChimeraCoder/anaconda
+  version: 91bfbf5de08def2e8b5480b52cae811d2bde3af9
+- name: github.com/ChimeraCoder/tokenbucket
+  version: c5a927568de7aad8a58127d80bcd36ca4e71e454
+- name: github.com/dustin/go-jsonpointer
+  version: 2efc9fef1d9421a8d252a32e20beb10cecd2bbca
+- name: github.com/dustin/gojson
+  version: 2e71ec9dd5adce3b168cd0dbde03b5cc04951c30
+- name: github.com/garyburd/go-oauth
+  version: 719b069913e1151a73ea30d2ea4f90deda3ce234
+  subpackages:
+  - oauth
+- name: github.com/go-yaml/yaml
+  version: 31c299268d302dd0aa9a0dcf765a3d58971ac83f
+- name: github.com/golang/protobuf
+  version: 7cc19b78d562895b13596ddce7aafb59dd789318
+  subpackages:
+  - proto
+- name: github.com/joho/godotenv
+  version: 4ed13390c0acd2ff4e371e64d8b97c8954138243
+- name: golang.org/x/net
+  version: 5916dcb167ed985a5b9e6871fbfd74848a4c170b
+  subpackages:
+  - context
+  - context/ctxhttp
+- name: golang.org/x/oauth2
+  version: e86e2718db89775a4604abc10a5d3a5672e7336e
+  subpackages:
+  - google
+  - internal
+  - jws
+  - jwt
+- name: golang.org/x/tools
+  version: 9ae4729fba20b3533d829a9c6ba8195b068f2abc
+  subpackages:
+  - blog/atom
+- name: google.golang.org/api
+  version: 7059a7f3d456870ff1e8424a6b1f62abe5f95f36
+  subpackages:
+  - calendar/v3
+  - gensupport
+  - googleapi
+  - googleapi/internal/uritemplates
+- name: google.golang.org/appengine
+  version: e234e71924d4aa52444bc76f2f831f13fa1eca60
+  subpackages:
+  - internal
+  - internal/app_identity
+  - internal/base
+  - internal/datastore
+  - internal/log
+  - internal/modules
+  - internal/remote_api
+  - internal/urlfetch
+  - urlfetch
+- name: google.golang.org/cloud
+  version: 426f71cccabdf34d0fd67fc49e25038c8f49a0bb
+  subpackages:
+  - compute/metadata
+  - internal
+testImports: []

@@ -1,0 +1,14 @@
+package: github.com/mono0x/murmur
+import:
+- package: github.com/ChimeraCoder/anaconda
+- package: github.com/go-yaml/yaml
+- package: github.com/joho/godotenv
+- package: golang.org/x/oauth2
+  subpackages:
+  - google
+- package: golang.org/x/tools
+  subpackages:
+  - blog/atom
+- package: google.golang.org/api
+  subpackages:
+  - calendar/v3
