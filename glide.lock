@@ -1,6 +1,11 @@
 hash: bb703c247363a66e2271cda67d4de31ea955d218f92a124d355435120999a207
-updated: 2016-09-28T15:06:51.591049649+09:00
+updated: 2016-10-05T00:00:19.418640823+09:00
 imports:
+- name: cloud.google.com/go
+  version: fe3d41e1ecb2ce36ad3a979037c9b9a2b726226f
+  subpackages:
+  - compute/metadata
+  - internal
 - name: github.com/azr/backoff
   version: 53511d3c733003985b0b76f733df1f4d0095ee6a
 - name: github.com/ChimeraCoder/anaconda
@@ -16,7 +21,7 @@ imports:
   subpackages:
   - oauth
 - name: github.com/go-yaml/yaml
-  version: 31c299268d302dd0aa9a0dcf765a3d58971ac83f
+  version: a5b47d31c556af34a302ce5d659e6fea44d90de0
 - name: github.com/golang/protobuf
   version: 7cc19b78d562895b13596ddce7aafb59dd789318
   subpackages:
@@ -29,7 +34,7 @@ imports:
   - context
   - context/ctxhttp
 - name: golang.org/x/oauth2
-  version: e86e2718db89775a4604abc10a5d3a5672e7336e
+  version: 3c3a985cb79f52a3190fbc056984415ca6763d01
   subpackages:
   - google
   - internal
@@ -58,9 +63,4 @@ imports:
   - internal/remote_api
   - internal/urlfetch
   - urlfetch
-- name: google.golang.org/cloud
-  version: 426f71cccabdf34d0fd67fc49e25038c8f49a0bb
-  subpackages:
-  - compute/metadata
-  - internal
 testImports: []
