@@ -1,14 +1,12 @@
 package murmur
 
 import (
-	"encoding/xml"
-	"io/ioutil"
 	"net/http"
 	"sort"
 	"strings"
 	"time"
 
-	"golang.org/x/tools/blog/atom"
+	"github.com/mmcdole/gofeed"
 )
 
 type FeedSourceConfig struct {
@@ -20,50 +18,23 @@ type FeedSource struct {
 	config *FeedSourceConfig
 }
 
-type atomEntry struct {
-	entry   *atom.Entry
-	hasTime bool
-	time    time.Time
-}
+type feedItemSlice []*gofeed.Item
 
-func newAtomEntry(entry *atom.Entry) *atomEntry {
-	var t time.Time
-	hasTime := false
-
-	if entry.Published != "" {
-		if published, err := time.Parse(time.RFC3339, string(entry.Published)); err == nil {
-			t = published
-			hasTime = true
-		}
-	} else if entry.Updated != "" {
-		if updated, err := time.Parse(time.RFC3339, string(entry.Updated)); err == nil {
-			t = updated
-			hasTime = true
-		}
-	}
-
-	return &atomEntry{
-		entry:   entry,
-		hasTime: hasTime,
-		time:    t,
-	}
-}
-
-type atomEntrySlice []*atomEntry
-
-func (a atomEntrySlice) Len() int {
+func (a feedItemSlice) Len() int {
 	return len(a)
 }
 
-func (a atomEntrySlice) Less(i, j int) bool {
-	if a[i].hasTime && a[j].hasTime {
-		return a[i].time.After(a[j].time)
-	} else {
-		return i < j
+func (a feedItemSlice) Less(i, j int) bool {
+	if a[i].PublishedParsed != nil && a[j].PublishedParsed != nil {
+		return a[i].PublishedParsed.After(*a[i].PublishedParsed)
 	}
+	if a[i].UpdatedParsed != nil && a[j].UpdatedParsed != nil {
+		return a[i].UpdatedParsed.After(*a[i].UpdatedParsed)
+	}
+	return i < j
 }
 
-func (a atomEntrySlice) Swap(i, j int) {
+func (a feedItemSlice) Swap(i, j int) {
 	a[i], a[j] = a[j], a[i]
 }
 
@@ -80,55 +51,50 @@ func (s *FeedSource) Items(recentUrls []string) ([]*Item, error) {
 	}
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	fp := gofeed.NewParser()
+	feed, err := fp.Parse(resp.Body)
 	if err != nil {
 		return nil, err
 	}
 
-	var feed atom.Feed
-	if err := xml.Unmarshal(body, &feed); err != nil {
-		return nil, err
-	}
-	return s.itemsFromFeed(&feed, recentUrls)
+	return s.itemsFromFeed(feed, recentUrls)
 }
 
-func (s *FeedSource) itemsFromFeed(feed *atom.Feed, recentUrls []string) ([]*Item, error) {
+func (s *FeedSource) itemsFromFeed(feed *gofeed.Feed, recentUrls []string) ([]*Item, error) {
 	t := time.Now().AddDate(0, 0, -1)
 
-	atomEntries := make(atomEntrySlice, 0, len(feed.Entry))
-	for _, entry := range feed.Entry {
-		atomEntries = append(atomEntries, newAtomEntry(entry))
-	}
-	sort.Sort(sort.Reverse(atomEntries))
+	items := feedItemSlice(feed.Items)
+	sort.Sort(sort.Reverse(items))
 
-	duplications := make(map[string]struct{}, len(atomEntries)+len(recentUrls))
+	duplications := make(map[string]struct{}, len(items)+len(recentUrls))
 	for _, url := range recentUrls {
 		duplications[url] = struct{}{}
 	}
 
-	items := make([]*Item, 0, len(atomEntries))
-	for _, atomEntry := range atomEntries {
-		entry := atomEntry.entry
-
-		if atomEntry.hasTime && !atomEntry.time.After(t) {
+	result := make([]*Item, 0, len(items))
+	for _, item := range items {
+		if item.PublishedParsed != nil && !item.PublishedParsed.After(t) {
+			continue
+		}
+		if item.UpdatedParsed != nil && !item.UpdatedParsed.After(t) {
 			continue
 		}
 
-		if len(entry.Link) == 0 {
+		if item.Link == "" {
 			continue
 		}
-		link := entry.Link[0]
-		if _, ok := duplications[link.Href]; ok {
-			continue
-		}
-		duplications[link.Href] = struct{}{}
 
-		replacer := strings.NewReplacer("{title}", entry.Title, "{url}", link.Href)
+		if _, ok := duplications[item.Link]; ok {
+			continue
+		}
+		duplications[item.Link] = struct{}{}
+
+		replacer := strings.NewReplacer("{title}", item.Title, "{url}", item.Link)
 		summary := replacer.Replace(s.config.Template)
-		items = append(items, &Item{
+		result = append(result, &Item{
 			Summary: summary,
-			Url:     link.Href,
+			Url:     item.Link,
 		})
 	}
-	return items, nil
+	return result, nil
 }

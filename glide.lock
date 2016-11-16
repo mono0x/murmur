@@ -1,11 +1,13 @@
-hash: bb703c247363a66e2271cda67d4de31ea955d218f92a124d355435120999a207
-updated: 2016-11-15T12:29:20.080735944+09:00
+hash: fc1575123dcf74eda210e4606fe2604c10582c369fb99345b7c86faa5ddf01df
+updated: 2016-11-16T12:23:55.48631053+09:00
 imports:
 - name: cloud.google.com/go
   version: fe3d41e1ecb2ce36ad3a979037c9b9a2b726226f
   subpackages:
   - compute/metadata
   - internal
+- name: github.com/andybalholm/cascadia
+  version: 3ad29d1ad1c4f2023e355603324348cf1f4b2d48
 - name: github.com/azr/backoff
   version: 53511d3c733003985b0b76f733df1f4d0095ee6a
 - name: github.com/ChimeraCoder/anaconda
@@ -28,11 +30,25 @@ imports:
   - proto
 - name: github.com/joho/godotenv
   version: 4ed13390c0acd2ff4e371e64d8b97c8954138243
+- name: github.com/mmcdole/gofeed
+  version: 303223474e837398b2f8a265e5572958bb5568c0
+  subpackages:
+  - atom
+  - extensions
+  - internal/shared
+  - rss
+- name: github.com/mmcdole/goxpp
+  version: e38884aa48c1952a416ba35f3c276e4f02f9b40e
+- name: github.com/PuerkitoBio/goquery
+  version: 2e29ea41f0d13f4a303c75553f4eeadddc7a4c56
 - name: golang.org/x/net
   version: 5916dcb167ed985a5b9e6871fbfd74848a4c170b
   subpackages:
   - context
   - context/ctxhttp
+  - html
+  - html/atom
+  - html/charset
 - name: golang.org/x/oauth2
   version: 3c3a985cb79f52a3190fbc056984415ca6763d01
   subpackages:
@@ -40,10 +56,24 @@ imports:
   - internal
   - jws
   - jwt
-- name: golang.org/x/tools
-  version: 9ae4729fba20b3533d829a9c6ba8195b068f2abc
+- name: golang.org/x/text
+  version: f773ec03ce334298742df7f3108fc0d402646d22
   subpackages:
-  - blog/atom
+  - encoding
+  - encoding/charmap
+  - encoding/htmlindex
+  - encoding/internal
+  - encoding/internal/identifier
+  - encoding/japanese
+  - encoding/korean
+  - encoding/simplifiedchinese
+  - encoding/traditionalchinese
+  - encoding/unicode
+  - internal/tag
+  - internal/utf8internal
+  - language
+  - runes
+  - transform
 - name: google.golang.org/api
   version: 7059a7f3d456870ff1e8424a6b1f62abe5f95f36
   subpackages:

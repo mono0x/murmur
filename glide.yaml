@@ -6,9 +6,7 @@ import:
 - package: golang.org/x/oauth2
   subpackages:
   - google
-- package: golang.org/x/tools
-  subpackages:
-  - blog/atom
 - package: google.golang.org/api
   subpackages:
   - calendar/v3
+- package: github.com/mmcdole/gofeed
