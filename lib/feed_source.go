@@ -63,7 +63,24 @@ func (s *FeedSource) Items(recentUrls []string) ([]*Item, error) {
 func (s *FeedSource) itemsFromFeed(feed *gofeed.Feed, recentUrls []string) ([]*Item, error) {
 	t := time.Now().AddDate(0, 0, -1)
 
-	items := feedItemSlice(feed.Items)
+	items := make(feedItemSlice, 0, len(feed.Items))
+	for _, item := range feed.Items {
+		if item.PublishedParsed != nil {
+			if !item.PublishedParsed.After(t) {
+				continue
+			}
+		} else if item.UpdatedParsed != nil {
+			if !item.UpdatedParsed.After(t) {
+				continue
+			}
+		}
+
+		if item.Link == "" {
+			continue
+		}
+
+		items = append(items, item)
+	}
 	sort.Sort(sort.Reverse(items))
 
 	duplications := make(map[string]struct{}, len(items)+len(recentUrls))
@@ -73,17 +90,6 @@ func (s *FeedSource) itemsFromFeed(feed *gofeed.Feed, recentUrls []string) ([]*I
 
 	result := make([]*Item, 0, len(items))
 	for _, item := range items {
-		if item.PublishedParsed != nil && !item.PublishedParsed.After(t) {
-			continue
-		}
-		if item.UpdatedParsed != nil && !item.UpdatedParsed.After(t) {
-			continue
-		}
-
-		if item.Link == "" {
-			continue
-		}
-
 		if _, ok := duplications[item.Link]; ok {
 			continue
 		}
