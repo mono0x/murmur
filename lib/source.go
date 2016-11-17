@@ -1,7 +1,7 @@
 package murmur
 
 type Source interface {
-	Items(recentUrls []string) ([]*Item, error)
+	Items() ([]*Item, error)
 }
 
 type SourceConfig interface {

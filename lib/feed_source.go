@@ -44,7 +44,7 @@ func (c *FeedSourceConfig) NewSource() (Source, error) {
 	}, nil
 }
 
-func (s *FeedSource) Items(recentUrls []string) ([]*Item, error) {
+func (s *FeedSource) Items() ([]*Item, error) {
 	resp, err := http.Get(s.config.Url)
 	if err != nil {
 		return nil, err
@@ -57,10 +57,10 @@ func (s *FeedSource) Items(recentUrls []string) ([]*Item, error) {
 		return nil, err
 	}
 
-	return s.itemsFromFeed(feed, recentUrls)
+	return s.itemsFromFeed(feed)
 }
 
-func (s *FeedSource) itemsFromFeed(feed *gofeed.Feed, recentUrls []string) ([]*Item, error) {
+func (s *FeedSource) itemsFromFeed(feed *gofeed.Feed) ([]*Item, error) {
 	t := time.Now().AddDate(0, 0, -1)
 
 	items := make(feedItemSlice, 0, len(feed.Items))
@@ -83,18 +83,8 @@ func (s *FeedSource) itemsFromFeed(feed *gofeed.Feed, recentUrls []string) ([]*I
 	}
 	sort.Sort(sort.Reverse(items))
 
-	duplications := make(map[string]struct{}, len(items)+len(recentUrls))
-	for _, url := range recentUrls {
-		duplications[url] = struct{}{}
-	}
-
 	result := make([]*Item, 0, len(items))
 	for _, item := range items {
-		if _, ok := duplications[item.Link]; ok {
-			continue
-		}
-		duplications[item.Link] = struct{}{}
-
 		replacer := strings.NewReplacer("{title}", item.Title, "{url}", item.Link)
 		summary := replacer.Replace(s.config.Template)
 		result = append(result, &Item{

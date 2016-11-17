@@ -26,7 +26,7 @@ func (c *GoogleCalendarSourceConfig) NewSource() (Source, error) {
 	}, nil
 }
 
-func (s *GoogleCalendarSource) Items(recentUrls []string) ([]*Item, error) {
+func (s *GoogleCalendarSource) Items() ([]*Item, error) {
 	json, err := ioutil.ReadFile("google_client_credentials.json")
 	if err != nil {
 		return nil, err
@@ -51,15 +51,10 @@ func (s *GoogleCalendarSource) Items(recentUrls []string) ([]*Item, error) {
 		return nil, err
 	}
 
-	return s.itemsFromEvents(events, recentUrls)
+	return s.itemsFromEvents(events)
 }
 
-func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events, recentUrls []string) ([]*Item, error) {
-	duplications := make(map[string]struct{}, len(events.Items)+len(recentUrls))
-	for _, url := range recentUrls {
-		duplications[url] = struct{}{}
-	}
-
+func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item, error) {
 	now := time.Now()
 
 	items := make([]*Item, 0, len(events.Items))
@@ -71,11 +66,6 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events, recentUr
 		if s.config.TimeZone != "" {
 			link += "&ctz=" + s.config.TimeZone
 		}
-
-		if _, ok := duplications[link]; ok {
-			continue
-		}
-		duplications[link] = struct{}{}
 
 		var date string
 		if event.Start.Date != "" {
