@@ -69,6 +69,18 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 
 		var date string
 		if event.Start.Date != "" {
+			endLoc, err := time.LoadLocation(event.End.TimeZone)
+			if err != nil {
+				return nil, err
+			}
+			end, err := time.ParseInLocation("2006-01-02", event.End.Date, endLoc)
+			if err != nil {
+				return nil, err
+			}
+			if now.After(end) {
+				continue
+			}
+
 			startLoc, err := time.LoadLocation(event.Start.TimeZone)
 			if err != nil {
 				return nil, err
@@ -77,11 +89,20 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 			if err != nil {
 				return nil, err
 			}
-			if now.After(start) {
-				continue
-			}
 			date = start.Format("01/02")
 		} else if event.Start.DateTime != "" {
+			endLoc, err := time.LoadLocation(event.End.TimeZone)
+			if err != nil {
+				return nil, err
+			}
+			end, err := time.ParseInLocation(time.RFC3339, event.End.DateTime, endLoc)
+			if err != nil {
+				return nil, err
+			}
+			if now.After(end) {
+				continue
+			}
+
 			startLoc, err := time.LoadLocation(event.Start.TimeZone)
 			if err != nil {
 				return nil, err
@@ -89,9 +110,6 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 			start, err := time.ParseInLocation(time.RFC3339, event.Start.DateTime, startLoc)
 			if err != nil {
 				return nil, err
-			}
-			if now.After(start) {
-				continue
 			}
 			date = start.Format("01/02")
 		}
