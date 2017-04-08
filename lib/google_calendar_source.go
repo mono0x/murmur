@@ -1,11 +1,11 @@
 package murmur
 
 import (
+	"context"
 	"io/ioutil"
 	"strings"
 	"time"
 
-	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	calendar "google.golang.org/api/calendar/v3"
 )
@@ -37,7 +37,7 @@ func (s *GoogleCalendarSource) Items() ([]*Item, error) {
 		return nil, err
 	}
 
-	client := config.Client(oauth2.NoContext)
+	client := config.Client(context.Background())
 
 	service, err := calendar.New(client)
 	if err != nil {
