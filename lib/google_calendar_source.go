@@ -57,6 +57,7 @@ func (s *GoogleCalendarSource) Items() ([]*Item, error) {
 }
 
 func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item, error) {
+	ignoreBorder := s.now.AddDate(0, 0, -7) // ignore events ended before this time
 	items := make([]*Item, 0, len(events.Items))
 	for _, event := range events.Items {
 		if event.Status == "cancelled" {
@@ -77,7 +78,7 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 			if err != nil {
 				return nil, err
 			}
-			if s.now.After(end) {
+			if ignoreBorder.After(end) {
 				continue
 			}
 
@@ -99,7 +100,7 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 			if err != nil {
 				return nil, err
 			}
-			if s.now.After(end) {
+			if ignoreBorder.After(end) {
 				continue
 			}
 
