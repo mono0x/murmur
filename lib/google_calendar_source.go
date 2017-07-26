@@ -11,9 +11,10 @@ import (
 )
 
 type GoogleCalendarSourceConfig struct {
-	CalendarId string `yaml:"calendar_id"`
-	Template   string `yaml:"template"`
-	TimeZone   string `yaml:"time_zone"`
+	CalendarId   string `yaml:"calendar_id"`
+	Template     string `yaml:"template"`
+	EndedMessage string `yaml:"ended_message"`
+	TimeZone     string `yaml:"time_zone"`
 }
 
 type GoogleCalendarSource struct {
@@ -68,7 +69,10 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 			link += "&ctz=" + s.config.TimeZone
 		}
 
-		var date string
+		var (
+			date    string
+			isEnded bool
+		)
 		if event.Start.Date != "" {
 			endLoc, err := time.LoadLocation(event.End.TimeZone)
 			if err != nil {
@@ -90,7 +94,9 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 			if err != nil {
 				return nil, err
 			}
+
 			date = start.Format("01/02")
+			isEnded = s.now.After(end)
 		} else if event.Start.DateTime != "" {
 			endLoc, err := time.LoadLocation(event.End.TimeZone)
 			if err != nil {
@@ -112,7 +118,14 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 			if err != nil {
 				return nil, err
 			}
+
 			date = start.Format("01/02")
+			isEnded = s.now.After(end)
+		}
+
+		var endedMessage string
+		if isEnded {
+			endedMessage = s.config.EndedMessage
 		}
 
 		location := strings.SplitN(event.Location, ",", 2)[0]
@@ -121,6 +134,7 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 			"{url}", link,
 			"{date}", date,
 			"{location}", location,
+			"{ended_message}", endedMessage,
 		)
 		summary := replacer.Replace(s.config.Template)
 		items = append(items, &Item{
