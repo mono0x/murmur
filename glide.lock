@@ -1,5 +1,5 @@
-hash: fc1575123dcf74eda210e4606fe2604c10582c369fb99345b7c86faa5ddf01df
-updated: 2017-02-03T00:10:42.071426522+09:00
+hash: b9971a84cb1f7b2549da304549015eaa67b05a070104aa1d9475fcc6f7163cf1
+updated: 2017-07-27T00:53:23.890597516+09:00
 imports:
 - name: cloud.google.com/go
   version: fe3d41e1ecb2ce36ad3a979037c9b9a2b726226f
@@ -39,6 +39,8 @@ imports:
   - rss
 - name: github.com/mmcdole/goxpp
   version: e38884aa48c1952a416ba35f3c276e4f02f9b40e
+- name: github.com/mvdan/xurls
+  version: 7c22e417b44241caa0baa72b1acb5a63b46bfb0a
 - name: github.com/PuerkitoBio/goquery
   version: 2e29ea41f0d13f4a303c75553f4eeadddc7a4c56
 - name: golang.org/x/net

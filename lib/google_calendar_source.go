@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/mvdan/xurls"
 	"golang.org/x/oauth2/google"
 	calendar "google.golang.org/api/calendar/v3"
 )
@@ -128,10 +129,17 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 			endedMessage = s.config.EndedMessage
 		}
 
+		urls := make([]string, 0)
+		if url := xurls.Strict.FindString(event.Description); url != "" {
+			urls = append(urls, url)
+		}
+		urls = append(urls, link)
+
 		location := strings.SplitN(event.Location, ",", 2)[0]
 		replacer := strings.NewReplacer(
 			"{title}", event.Summary,
 			"{url}", link,
+			"{urls}", strings.Join(urls, " "),
 			"{date}", date,
 			"{location}", location,
 			"{ended_message}", endedMessage,

@@ -10,3 +10,4 @@ import:
   subpackages:
   - calendar/v3
 - package: github.com/mmcdole/gofeed
+- package: github.com/mvdan/xurls
