@@ -18,11 +18,13 @@ type GoogleCalendarSourceConfig struct {
 
 type GoogleCalendarSource struct {
 	config *GoogleCalendarSourceConfig
+	now    time.Time
 }
 
 func (c *GoogleCalendarSourceConfig) NewSource() (Source, error) {
 	return &GoogleCalendarSource{
 		config: c,
+		now:    time.Now(),
 	}, nil
 }
 
@@ -44,7 +46,7 @@ func (s *GoogleCalendarSource) Items() ([]*Item, error) {
 		return nil, err
 	}
 
-	updatedMin := time.Now().AddDate(0, 0, -1).Format(time.RFC3339)
+	updatedMin := s.now.AddDate(0, 0, -1).Format(time.RFC3339)
 
 	events, err := service.Events.List(s.config.CalendarId).UpdatedMin(updatedMin).MaxResults(100).SingleEvents(true).Do()
 	if err != nil {
@@ -55,8 +57,6 @@ func (s *GoogleCalendarSource) Items() ([]*Item, error) {
 }
 
 func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item, error) {
-	now := time.Now()
-
 	items := make([]*Item, 0, len(events.Items))
 	for _, event := range events.Items {
 		if event.Status == "cancelled" {
@@ -77,7 +77,7 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 			if err != nil {
 				return nil, err
 			}
-			if now.After(end) {
+			if s.now.After(end) {
 				continue
 			}
 
@@ -99,7 +99,7 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 			if err != nil {
 				return nil, err
 			}
-			if now.After(end) {
+			if s.now.After(end) {
 				continue
 			}
 
