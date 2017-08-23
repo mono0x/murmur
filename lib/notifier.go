@@ -1,5 +1,7 @@
 package murmur
 
+import "golang.org/x/sync/errgroup"
+
 type Notifier struct {
 	Source Source
 	Sink   Sink
@@ -13,13 +15,23 @@ func NewNotifier(source Source, sink Sink) *Notifier {
 }
 
 func (n *Notifier) Notify() error {
-	items, err := n.Source.Items()
-	if err != nil {
-		return err
-	}
+	eg := errgroup.Group{}
 
-	urls, err := n.Sink.RecentUrls()
-	if err != nil {
+	var items []*Item
+	eg.Go(func() error {
+		var err error
+		items, err = n.Source.Items()
+		return err
+	})
+
+	var urls []string
+	eg.Go(func() error {
+		var err error
+		urls, err = n.Sink.RecentUrls()
+		return err
+	})
+
+	if err := eg.Wait(); err != nil {
 		return err
 	}
 

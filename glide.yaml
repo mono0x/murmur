@@ -11,3 +11,6 @@ import:
   - calendar/v3
 - package: github.com/mmcdole/gofeed
 - package: github.com/mvdan/xurls
+- package: golang.org/x/sync
+  subpackages:
+  - errgroup
