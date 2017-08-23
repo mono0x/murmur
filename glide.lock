@@ -1,5 +1,5 @@
 hash: b9971a84cb1f7b2549da304549015eaa67b05a070104aa1d9475fcc6f7163cf1
-updated: 2017-07-27T00:53:23.890597516+09:00
+updated: 2017-08-24T00:38:15.028237384+09:00
 imports:
 - name: cloud.google.com/go
   version: fe3d41e1ecb2ce36ad3a979037c9b9a2b726226f
@@ -42,7 +42,7 @@ imports:
 - name: github.com/mvdan/xurls
   version: 7c22e417b44241caa0baa72b1acb5a63b46bfb0a
 - name: github.com/PuerkitoBio/goquery
-  version: 2e29ea41f0d13f4a303c75553f4eeadddc7a4c56
+  version: e1271ee34c6a305e38566ecd27ae374944907ee9
 - name: golang.org/x/net
   version: 5916dcb167ed985a5b9e6871fbfd74848a4c170b
   subpackages:
@@ -105,6 +105,6 @@ testImports:
   subpackages:
   - difflib
 - name: github.com/stretchr/testify
-  version: 976c720a22c8eb4eb6a0b4348ad85ad12491a506
+  version: 69483b4bd14f5845b5a1e55bca19e954e827f1d0
   subpackages:
   - assert
