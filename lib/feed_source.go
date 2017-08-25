@@ -18,26 +18,6 @@ type FeedSource struct {
 	config *FeedSourceConfig
 }
 
-type feedItemSlice []*gofeed.Item
-
-func (a feedItemSlice) Len() int {
-	return len(a)
-}
-
-func (a feedItemSlice) Less(i, j int) bool {
-	if a[i].PublishedParsed != nil && a[j].PublishedParsed != nil {
-		return a[i].PublishedParsed.After(*a[i].PublishedParsed)
-	}
-	if a[i].UpdatedParsed != nil && a[j].UpdatedParsed != nil {
-		return a[i].UpdatedParsed.After(*a[i].UpdatedParsed)
-	}
-	return i < j
-}
-
-func (a feedItemSlice) Swap(i, j int) {
-	a[i], a[j] = a[j], a[i]
-}
-
 func (c *FeedSourceConfig) NewSource() (Source, error) {
 	return &FeedSource{
 		config: c,
@@ -63,7 +43,7 @@ func (s *FeedSource) Items() ([]*Item, error) {
 func (s *FeedSource) itemsFromFeed(feed *gofeed.Feed) ([]*Item, error) {
 	t := time.Now().AddDate(0, 0, -1)
 
-	items := make(feedItemSlice, 0, len(feed.Items))
+	items := make([]*gofeed.Item, 0, len(feed.Items))
 	for _, item := range feed.Items {
 		if item.PublishedParsed != nil {
 			if !item.PublishedParsed.After(t) {
@@ -81,7 +61,15 @@ func (s *FeedSource) itemsFromFeed(feed *gofeed.Feed) ([]*Item, error) {
 
 		items = append(items, item)
 	}
-	sort.Sort(sort.Reverse(items))
+	sort.Slice(items, func(i, j int) bool {
+		if items[i].PublishedParsed != nil && items[j].PublishedParsed != nil {
+			return items[i].PublishedParsed.Before(*items[i].PublishedParsed)
+		}
+		if items[i].UpdatedParsed != nil && items[j].UpdatedParsed != nil {
+			return items[i].UpdatedParsed.Before(*items[i].UpdatedParsed)
+		}
+		return i > j
+	})
 
 	result := make([]*Item, 0, len(items))
 	for _, item := range items {
