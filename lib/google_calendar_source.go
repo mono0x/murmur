@@ -6,9 +6,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/mvdan/xurls"
 	"golang.org/x/oauth2/google"
 	calendar "google.golang.org/api/calendar/v3"
+	"mvdan.cc/xurls"
 )
 
 type GoogleCalendarSourceConfig struct {
