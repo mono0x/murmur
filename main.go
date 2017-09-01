@@ -3,9 +3,9 @@ package main
 import (
 	"errors"
 	"flag"
-	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/mono0x/murmur/lib"
@@ -22,12 +22,13 @@ func run() error {
 	flag.StringVar(&configFile, "config", "config.yaml", "string config")
 	flag.Parse()
 
-	configData, err := ioutil.ReadFile(configFile)
+	f, err := os.Open(configFile)
 	if err != nil {
 		return err
 	}
+	defer f.Close()
 
-	config, err := murmur.LoadConfig(configData)
+	config, err := murmur.LoadConfig(f)
 	if err != nil {
 		return err
 	}

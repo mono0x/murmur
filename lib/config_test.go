@@ -1,13 +1,14 @@
 package murmur
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestNewSourceForFeedSource(t *testing.T) {
-	config, err := LoadConfig([]byte(`---
+	config, err := LoadConfig(strings.NewReader(`---
 source:
   type: feed
   feed:
@@ -30,7 +31,7 @@ source:
 }
 
 func TestNewSourceForGoogleCalendarSource(t *testing.T) {
-	config, err := LoadConfig([]byte(`---
+	config, err := LoadConfig(strings.NewReader(`---
 source:
   type: google_calendar
   google_calendar:
@@ -55,7 +56,7 @@ source:
 }
 
 func TestNewSinkForTwitterSink(t *testing.T) {
-	config, err := LoadConfig([]byte(`---
+	config, err := LoadConfig(strings.NewReader(`---
 sink:
   type: twitter
   twitter:

@@ -2,6 +2,8 @@ package murmur
 
 import (
 	"errors"
+	"io"
+	"io/ioutil"
 
 	"github.com/go-yaml/yaml"
 )
@@ -40,7 +42,11 @@ type Config struct {
 	} `yaml:"sink"`
 }
 
-func LoadConfig(data []byte) (*Config, error) {
+func LoadConfig(reader io.Reader) (*Config, error) {
+	data, err := ioutil.ReadAll(reader)
+	if err != nil {
+		return nil, err
+	}
 	var config Config
 	if err := yaml.Unmarshal(data, &config); err != nil {
 		return nil, err
