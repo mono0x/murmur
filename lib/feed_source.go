@@ -1,11 +1,11 @@
 package murmur
 
 import (
-	"net/http"
 	"sort"
 	"strings"
 	"time"
 
+	retryablehttp "github.com/hashicorp/go-retryablehttp"
 	"github.com/mmcdole/gofeed"
 )
 
@@ -25,7 +25,10 @@ func (c *FeedSourceConfig) NewSource() (Source, error) {
 }
 
 func (s *FeedSource) Items() ([]*Item, error) {
-	resp, err := http.Get(s.config.Url)
+	client := retryablehttp.NewClient()
+	client.RetryMax = 1
+
+	resp, err := client.Get(s.config.Url)
 	if err != nil {
 		return nil, err
 	}

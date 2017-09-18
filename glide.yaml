@@ -15,3 +15,5 @@ import:
   - errgroup
 - package: mvdan.cc/xurls
   version: ^1.1.0
+- package: github.com/hashicorp/go-retryablehttp
+- package: github.com/hashicorp/go-cleanhttp

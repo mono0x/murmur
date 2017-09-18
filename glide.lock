@@ -1,5 +1,5 @@
-hash: ae5883bda726a825b31072520d9a0ddeee80e5c772bdcf6bedb1d1af86caca29
-updated: 2017-09-01T21:39:56.533216879+09:00
+hash: c0a38a48128d5e0e1cd7d4f283239b6b90e90bbd7485bbbd171fa77d250a0c24
+updated: 2017-09-18T23:13:52.990027071+09:00
 imports:
 - name: cloud.google.com/go
   version: fe3d41e1ecb2ce36ad3a979037c9b9a2b726226f
@@ -28,6 +28,10 @@ imports:
   version: 7cc19b78d562895b13596ddce7aafb59dd789318
   subpackages:
   - proto
+- name: github.com/hashicorp/go-cleanhttp
+  version: 3573b8b52aa7b37b9358d966a898feb387f62437
+- name: github.com/hashicorp/go-retryablehttp
+  version: 794af36148bf63c118d6db80eb902a136b907e71
 - name: github.com/joho/godotenv
   version: 4ed13390c0acd2ff4e371e64d8b97c8954138243
 - name: github.com/mmcdole/gofeed
