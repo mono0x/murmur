@@ -1,6 +1,7 @@
 package murmur
 
 import (
+	"io/ioutil"
 	"sort"
 	"strings"
 	"time"
@@ -27,6 +28,7 @@ func (c *FeedSourceConfig) NewSource() (Source, error) {
 func (s *FeedSource) Items() ([]*Item, error) {
 	client := retryablehttp.NewClient()
 	client.RetryMax = 1
+	client.Logger.SetOutput(ioutil.Discard)
 
 	resp, err := client.Get(s.config.Url)
 	if err != nil {
