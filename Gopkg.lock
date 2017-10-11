@@ -3,14 +3,15 @@
 
 [[projects]]
   name = "cloud.google.com/go"
-  packages = ["compute/metadata","internal"]
-  revision = "fe3d41e1ecb2ce36ad3a979037c9b9a2b726226f"
-  version = "v0.2.0"
+  packages = ["compute/metadata"]
+  revision = "eaddaf6dd7ee35fd3c2420c8d27478db176b0485"
+  version = "v0.15.0"
 
 [[projects]]
   name = "github.com/ChimeraCoder/anaconda"
   packages = ["."]
-  revision = "91bfbf5de08def2e8b5480b52cae811d2bde3af9"
+  revision = "0cb3e4c3ff8c6df5c73d5058c64e9c4eb6299c4b"
+  version = "v1.0.0"
 
 [[projects]]
   branch = "master"
@@ -25,9 +26,10 @@
   version = "v1.1.0"
 
 [[projects]]
+  branch = "master"
   name = "github.com/andybalholm/cascadia"
   packages = ["."]
-  revision = "3ad29d1ad1c4f2023e355603324348cf1f4b2d48"
+  revision = "349dd0209470eabd9514242c688c403c0926d266"
 
 [[projects]]
   branch = "master"
@@ -38,12 +40,14 @@
 [[projects]]
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
-  revision = "6d212800a42e8ab5c146b8ace3490ee17e5225f9"
+  revision = "346938d642f2ec3594ed81d874461961cd0faa76"
+  version = "v1.1.0"
 
 [[projects]]
+  branch = "master"
   name = "github.com/dustin/go-jsonpointer"
   packages = ["."]
-  revision = "2efc9fef1d9421a8d252a32e20beb10cecd2bbca"
+  revision = "ba0abeacc3dcca5b9b20f31509c46794edbc9965"
 
 [[projects]]
   branch = "master"
@@ -52,19 +56,22 @@
   revision = "2e71ec9dd5adce3b168cd0dbde03b5cc04951c30"
 
 [[projects]]
+  branch = "master"
   name = "github.com/garyburd/go-oauth"
   packages = ["oauth"]
-  revision = "719b069913e1151a73ea30d2ea4f90deda3ce234"
+  revision = "4cff9ef7b7003713efa191899dbaab8fa75e3e73"
 
 [[projects]]
+  branch = "v2"
   name = "github.com/go-yaml/yaml"
   packages = ["."]
-  revision = "31c299268d302dd0aa9a0dcf765a3d58971ac83f"
+  revision = "eb3733d160e74a9c7e442f435eb3bea458e1d19f"
 
 [[projects]]
+  branch = "master"
   name = "github.com/golang/protobuf"
   packages = ["proto"]
-  revision = "7cc19b78d562895b13596ddce7aafb59dd789318"
+  revision = "130e6b02ab059e7b717a096f397c5b60111cae74"
 
 [[projects]]
   branch = "master"
@@ -85,14 +92,16 @@
   version = "v1.0.0-beta"
 
 [[projects]]
+  branch = "master"
   name = "github.com/mmcdole/goxpp"
   packages = ["."]
-  revision = "e38884aa48c1952a416ba35f3c276e4f02f9b40e"
+  revision = "77e4a51a73ed99ee3f33c1474dc166866304acbd"
 
 [[projects]]
   name = "github.com/pmezard/go-difflib"
   packages = ["difflib"]
-  revision = "d8ed2627bdf02c080bf22230dbb337003b7aba2d"
+  revision = "792786c7400a136282c1664665ae0a8db921c6c2"
+  version = "v1.0.0"
 
 [[projects]]
   name = "github.com/stretchr/testify"
@@ -101,34 +110,40 @@
   version = "v1.1.4"
 
 [[projects]]
+  branch = "master"
   name = "golang.org/x/net"
   packages = ["context","context/ctxhttp","html","html/atom","html/charset"]
-  revision = "5916dcb167ed985a5b9e6871fbfd74848a4c170b"
+  revision = "a04bdaca5b32abe1c069418fb7088ae607de5bd0"
 
 [[projects]]
+  branch = "master"
   name = "golang.org/x/oauth2"
   packages = [".","google","internal","jws","jwt"]
-  revision = "3c3a985cb79f52a3190fbc056984415ca6763d01"
+  revision = "bb50c06baba3d0c76f9d125c0719093e315b5b44"
 
 [[projects]]
+  branch = "master"
   name = "golang.org/x/sync"
   packages = ["errgroup"]
-  revision = "f52d1811a62927559de87708c8913c1650ce4f26"
+  revision = "8e0aa688b654ef28caa72506fa5ec8dba9fc7690"
 
 [[projects]]
+  branch = "master"
   name = "golang.org/x/text"
   packages = ["encoding","encoding/charmap","encoding/htmlindex","encoding/internal","encoding/internal/identifier","encoding/japanese","encoding/korean","encoding/simplifiedchinese","encoding/traditionalchinese","encoding/unicode","internal/gen","internal/tag","internal/utf8internal","language","runes","transform","unicode/cldr"]
-  revision = "f773ec03ce334298742df7f3108fc0d402646d22"
+  revision = "825fc78a2fd6fa0a5447e300189e3219e05e1f25"
 
 [[projects]]
+  branch = "master"
   name = "google.golang.org/api"
   packages = ["calendar/v3","gensupport","googleapi","googleapi/internal/uritemplates"]
-  revision = "7059a7f3d456870ff1e8424a6b1f62abe5f95f36"
+  revision = "8615d46d2e751d0db6d6ec7fbffee66185a42a07"
 
 [[projects]]
   name = "google.golang.org/appengine"
   packages = [".","internal","internal/app_identity","internal/base","internal/datastore","internal/log","internal/modules","internal/remote_api","internal/urlfetch","urlfetch"]
-  revision = "e234e71924d4aa52444bc76f2f831f13fa1eca60"
+  revision = "150dc57a1b433e64154302bdc40b6bb8aefa313a"
+  version = "v1.0.0"
 
 [[projects]]
   name = "mvdan.cc/xurls"
