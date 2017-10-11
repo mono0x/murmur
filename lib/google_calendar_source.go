@@ -59,6 +59,7 @@ func (s *GoogleCalendarSource) Items() ([]*Item, error) {
 }
 
 func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item, error) {
+	urlRe := xurls.Strict()
 	ignoreBorder := s.now.AddDate(0, 0, -7) // ignore events ended before this time
 	items := make([]*Item, 0, len(events.Items))
 	for _, event := range events.Items {
@@ -130,7 +131,7 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 		}
 
 		urls := make([]string, 0)
-		if url := xurls.Strict.FindString(event.Description); url != "" {
+		if url := urlRe.FindString(event.Description); url != "" {
 			urls = append(urls, url)
 		}
 		urls = append(urls, link)

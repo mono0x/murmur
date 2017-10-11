@@ -146,14 +146,14 @@
   version = "v1.0.0"
 
 [[projects]]
+  branch = "master"
   name = "mvdan.cc/xurls"
   packages = ["."]
-  revision = "d315b61cf6727664f310fa87b3197e9faf2a8513"
-  version = "v1.1.0"
+  revision = "284d56d6f9b9a86a9d5dcf57ec1340731a356d1b"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "3717a0aa11ae6bb9d3f638f176747ece047862087f13b4d146ee3d188e141ffb"
+  inputs-digest = "556a8210f498637df26cb99fdb6e85ad933eadb3aa7c05a099f2359e0eece49c"
   solver-name = "gps-cdcl"
   solver-version = 1
