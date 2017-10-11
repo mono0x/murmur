@@ -47,4 +47,3 @@
 
 [[constraint]]
   name = "mvdan.cc/xurls"
-  branch = "master"
