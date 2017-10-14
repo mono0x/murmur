@@ -45,11 +45,7 @@ func run() error {
 	defer sink.Close()
 
 	notifier := murmur.NewNotifier(source, sink)
-	if err := notifier.Notify(); err != nil {
-		return err
-	}
-
-	return nil
+	return notifier.Notify()
 }
 
 func main() {
