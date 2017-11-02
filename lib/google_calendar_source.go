@@ -63,6 +63,9 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 	ignoreBorder := s.now.AddDate(0, 0, -7) // ignore events ended before this time
 	items := make([]*Item, 0, len(events.Items))
 	for _, event := range events.Items {
+		if event.Visibility == "private" {
+			continue
+		}
 		if event.Status == "cancelled" {
 			continue
 		}
