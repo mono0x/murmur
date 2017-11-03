@@ -1,11 +1,11 @@
 package murmur
 
 import (
-	"errors"
 	"io"
 	"io/ioutil"
 
 	"github.com/go-yaml/yaml"
+	"github.com/pkg/errors"
 )
 
 type SourceType string
@@ -45,11 +45,11 @@ type Config struct {
 func LoadConfig(reader io.Reader) (*Config, error) {
 	data, err := ioutil.ReadAll(reader)
 	if err != nil {
-		return nil, err
+		return nil, errors.WithStack(err)
 	}
 	var config Config
 	if err := yaml.Unmarshal(data, &config); err != nil {
-		return nil, err
+		return nil, errors.WithStack(err)
 	}
 	return &config, nil
 }

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"flag"
 	"log"
 	"net/http"
@@ -9,6 +8,7 @@ import (
 	"time"
 
 	"github.com/mono0x/murmur/lib"
+	"github.com/pkg/errors"
 )
 
 func run() error {
@@ -24,7 +24,7 @@ func run() error {
 
 	f, err := os.Open(configFile)
 	if err != nil {
-		return err
+		return errors.WithStack(err)
 	}
 	defer f.Close()
 
@@ -52,6 +52,6 @@ func main() {
 	log.SetFlags(log.Lshortfile)
 
 	if err := run(); err != nil {
-		log.Fatal(err)
+		log.Fatalf("%+v\n", err)
 	}
 }

@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/pkg/errors"
 	"golang.org/x/oauth2/google"
 	calendar "google.golang.org/api/calendar/v3"
 	"mvdan.cc/xurls"
@@ -33,26 +34,26 @@ func (c *GoogleCalendarSourceConfig) NewSource() (Source, error) {
 func (s *GoogleCalendarSource) Items() ([]*Item, error) {
 	json, err := ioutil.ReadFile("google_client_credentials.json")
 	if err != nil {
-		return nil, err
+		return nil, errors.WithStack(err)
 	}
 
 	config, err := google.JWTConfigFromJSON(json, calendar.CalendarReadonlyScope)
 	if err != nil {
-		return nil, err
+		return nil, errors.WithStack(err)
 	}
 
 	client := config.Client(context.Background())
 
 	service, err := calendar.New(client)
 	if err != nil {
-		return nil, err
+		return nil, errors.WithStack(err)
 	}
 
 	updatedMin := s.now.AddDate(0, 0, -1).Format(time.RFC3339)
 
 	events, err := service.Events.List(s.config.CalendarId).UpdatedMin(updatedMin).MaxResults(100).SingleEvents(true).Do()
 	if err != nil {
-		return nil, err
+		return nil, errors.WithStack(err)
 	}
 
 	return s.itemsFromEvents(events)
@@ -81,11 +82,11 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 		if event.Start.Date != "" {
 			endLoc, err := time.LoadLocation(event.End.TimeZone)
 			if err != nil {
-				return nil, err
+				return nil, errors.WithStack(err)
 			}
 			end, err := time.ParseInLocation("2006-01-02", event.End.Date, endLoc)
 			if err != nil {
-				return nil, err
+				return nil, errors.WithStack(err)
 			}
 			if ignoreBorder.After(end) {
 				continue
@@ -93,11 +94,11 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 
 			startLoc, err := time.LoadLocation(event.Start.TimeZone)
 			if err != nil {
-				return nil, err
+				return nil, errors.WithStack(err)
 			}
 			start, err := time.ParseInLocation("2006-01-02", event.Start.Date, startLoc)
 			if err != nil {
-				return nil, err
+				return nil, errors.WithStack(err)
 			}
 
 			date = start.Format("01/02")
@@ -105,11 +106,11 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 		} else if event.Start.DateTime != "" {
 			endLoc, err := time.LoadLocation(event.End.TimeZone)
 			if err != nil {
-				return nil, err
+				return nil, errors.WithStack(err)
 			}
 			end, err := time.ParseInLocation(time.RFC3339, event.End.DateTime, endLoc)
 			if err != nil {
-				return nil, err
+				return nil, errors.WithStack(err)
 			}
 			if ignoreBorder.After(end) {
 				continue
@@ -117,11 +118,11 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 
 			startLoc, err := time.LoadLocation(event.Start.TimeZone)
 			if err != nil {
-				return nil, err
+				return nil, errors.WithStack(err)
 			}
 			start, err := time.ParseInLocation(time.RFC3339, event.Start.DateTime, startLoc)
 			if err != nil {
-				return nil, err
+				return nil, errors.WithStack(err)
 			}
 
 			date = start.Format("01/02")

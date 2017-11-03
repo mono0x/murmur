@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/ChimeraCoder/anaconda"
+	"github.com/pkg/errors"
 )
 
 type TwitterSinkConfig struct {
@@ -39,7 +40,7 @@ func (s *TwitterSink) Close() {
 func (s *TwitterSink) RecentUrls() ([]string, error) {
 	userId := strings.SplitN(s.config.OAuthToken, "-", 2)[0]
 	if _, err := strconv.ParseInt(userId, 10, 64); err != nil {
-		return nil, err
+		return nil, errors.WithStack(err)
 	}
 
 	v := url.Values{}
@@ -47,7 +48,7 @@ func (s *TwitterSink) RecentUrls() ([]string, error) {
 	v.Set("count", "200") // TODO: read from the config
 	timeline, err := s.api.GetUserTimeline(v)
 	if err != nil {
-		return nil, err
+		return nil, errors.WithStack(err)
 	}
 
 	urls := make([]string, 0, len(timeline)) // heuristic optimization
@@ -70,9 +71,9 @@ func (s *TwitterSink) Output(item *Item) error {
 					return nil
 				}
 			}
-			return apiErr
+			return errors.WithStack(apiErr)
 		} else {
-			return err
+			return errors.WithStack(err)
 		}
 	}
 	return nil

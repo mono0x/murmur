@@ -8,6 +8,7 @@ import (
 
 	retryablehttp "github.com/hashicorp/go-retryablehttp"
 	"github.com/mmcdole/gofeed"
+	"github.com/pkg/errors"
 )
 
 type FeedSourceConfig struct {
@@ -32,14 +33,14 @@ func (s *FeedSource) Items() ([]*Item, error) {
 
 	resp, err := client.Get(s.config.Url)
 	if err != nil {
-		return nil, err
+		return nil, errors.WithStack(err)
 	}
 	defer resp.Body.Close()
 
 	fp := gofeed.NewParser()
 	feed, err := fp.Parse(resp.Body)
 	if err != nil {
-		return nil, err
+		return nil, errors.WithStack(err)
 	}
 
 	return s.itemsFromFeed(feed)
