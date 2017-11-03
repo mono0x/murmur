@@ -50,7 +50,7 @@ func (s *TwitterSink) RecentUrls() ([]string, error) {
 		return nil, err
 	}
 
-	urls := make([]string, len(timeline))
+	urls := make([]string, 0, len(timeline)) // heuristic optimization
 	for _, status := range timeline {
 		for _, url := range status.Entities.Urls {
 			urls = append(urls, url.Expanded_url)
