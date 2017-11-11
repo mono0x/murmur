@@ -8,10 +8,10 @@
   version = "v0.16.0"
 
 [[projects]]
+  branch = "master"
   name = "github.com/ChimeraCoder/anaconda"
   packages = ["."]
-  revision = "0cb3e4c3ff8c6df5c73d5058c64e9c4eb6299c4b"
-  version = "v1.0.0"
+  revision = "63ac04497fe5e76a698c595abf57578b5db5140c"
 
 [[projects]]
   branch = "master"
@@ -160,6 +160,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "58d0c99e1eeebcc3586339f825b8cf266163915e2117549bfb721348a4da5b16"
+  inputs-digest = "4c4a5b01764c61e5b0580553b23d4893065a842dca7290a754e1e10eaff79058"
   solver-name = "gps-cdcl"
   solver-version = 1
