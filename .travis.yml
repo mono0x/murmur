@@ -4,12 +4,13 @@ go:
 - 1.9.2
 before_install:
 - go get github.com/golang/dep/cmd/dep
-- go get honnef.co/go/tools/cmd/megacheck
+- go get github.com/twitchtv/retool
 install:
 - dep ensure
+- retool sync
 script:
 - go vet ./...
-- megacheck ./...
+- retool do megacheck ./...
 - go test -v -race ./...
 notifications:
   slack:
