@@ -12,12 +12,6 @@ import (
 )
 
 func run() error {
-	if transport, ok := http.DefaultTransport.(*http.Transport); ok {
-		transport.TLSHandshakeTimeout = 30 * time.Second
-	} else {
-		return errors.New("Change TLSHandshakeTimeout failed")
-	}
-
 	var configFile string
 	flag.StringVar(&configFile, "config", "config.yaml", "string config")
 	flag.Parse()
@@ -50,6 +44,8 @@ func run() error {
 
 func main() {
 	log.SetFlags(log.Lshortfile)
+
+	http.DefaultTransport.(*http.Transport).TLSHandshakeTimeout = 30 * time.Second
 
 	if err := run(); err != nil {
 		log.Fatalf("%+v\n", err)
