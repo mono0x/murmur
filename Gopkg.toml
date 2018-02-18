@@ -27,24 +27,31 @@
 
 [[constraint]]
   name = "github.com/go-yaml/yaml"
+  branch = "v2"
 
 [[constraint]]
   name = "github.com/hashicorp/go-retryablehttp"
+  branch = "master"
 
 [[constraint]]
   name = "github.com/mmcdole/gofeed"
+  branch = "master"
 
 [[constraint]]
   name = "github.com/stretchr/testify"
+  branch = "master"
 
 [[constraint]]
   name = "golang.org/x/oauth2"
+  branch = "master"
 
 [[constraint]]
   name = "golang.org/x/sync"
+  branch = "master"
 
 [[constraint]]
   name = "google.golang.org/api"
+  branch = "master"
 
 [[constraint]]
   name = "mvdan.cc/xurls"
