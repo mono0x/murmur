@@ -11,7 +11,7 @@
   branch = "master"
   name = "github.com/ChimeraCoder/anaconda"
   packages = ["."]
-  revision = "37d498d409d0ec1fbd0ffa155a4db612e2ce7f54"
+  revision = "afe61d6d0d50297fe33f4fac4b007988ba9c575b"
 
 [[projects]]
   branch = "master"

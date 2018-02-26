@@ -22,11 +22,8 @@ type TwitterSink struct {
 }
 
 func (c *TwitterSinkConfig) NewSink() (Sink, error) {
-	// XXX: shouldn't update global variables...
-	anaconda.SetConsumerKey(c.ConsumerKey)
-	anaconda.SetConsumerSecret(c.ConsumerSecret)
-
-	api := anaconda.NewTwitterApi(c.OAuthToken, c.OAuthTokenSecret)
+	api := anaconda.NewTwitterApiWithCredentials(
+		c.OAuthToken, c.OAuthTokenSecret, c.ConsumerKey, c.ConsumerSecret)
 	return &TwitterSink{
 		config: c,
 		api:    api,
