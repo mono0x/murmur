@@ -3,6 +3,7 @@ package murmur
 import (
 	"context"
 	"io/ioutil"
+	"net/url"
 	"strings"
 	"time"
 
@@ -60,6 +61,20 @@ func (s *GoogleCalendarSource) Items() ([]*Item, error) {
 }
 
 func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item, error) {
+	loc, err := time.LoadLocation(events.TimeZone)
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
+
+	var locIn *time.Location
+	if s.config.TimeZone != "" {
+		var err error
+		locIn, err = time.LoadLocation(s.config.TimeZone)
+		if err != nil {
+			return nil, errors.WithStack(err)
+		}
+	}
+
 	urlRe := xurls.Strict()
 	ignoreBorder := s.now.AddDate(0, 0, -7) // ignore events ended before this time
 	items := make([]*Item, 0, len(events.Items))
@@ -70,9 +85,46 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 		if event.Status == "cancelled" {
 			continue
 		}
-		link := event.HtmlLink
+
+		var timeZone string
 		if s.config.TimeZone != "" {
-			link += "&ctz=" + s.config.TimeZone
+			timeZone = s.config.TimeZone
+		} else if event.Start.TimeZone != "" {
+			timeZone = event.Start.TimeZone
+		} else {
+			timeZone = events.TimeZone
+		}
+
+		link := event.HtmlLink
+		if timeZone != "" {
+			u, err := url.Parse(link)
+			if err != nil {
+				return nil, errors.WithStack(err)
+			}
+			query := u.Query()
+			query.Set("ctz", timeZone)
+			u.RawQuery = query.Encode()
+			link = u.String()
+		}
+
+		var startLoc *time.Location
+		if event.Start.TimeZone != "" {
+			startLoc, err = time.LoadLocation(event.Start.TimeZone)
+			if err != nil {
+				return nil, errors.WithStack(err)
+			}
+		} else {
+			startLoc = loc
+		}
+
+		var endLoc *time.Location
+		if event.End.TimeZone != "" {
+			endLoc, err = time.LoadLocation(event.End.TimeZone)
+			if err != nil {
+				return nil, errors.WithStack(err)
+			}
+		} else {
+			endLoc = loc
 		}
 
 		var (
@@ -80,10 +132,6 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 			isEnded bool
 		)
 		if event.Start.Date != "" {
-			endLoc, err := time.LoadLocation(event.End.TimeZone)
-			if err != nil {
-				return nil, errors.WithStack(err)
-			}
 			end, err := time.ParseInLocation("2006-01-02", event.End.Date, endLoc)
 			if err != nil {
 				return nil, errors.WithStack(err)
@@ -92,22 +140,18 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 				continue
 			}
 
-			startLoc, err := time.LoadLocation(event.Start.TimeZone)
-			if err != nil {
-				return nil, errors.WithStack(err)
-			}
 			start, err := time.ParseInLocation("2006-01-02", event.Start.Date, startLoc)
 			if err != nil {
 				return nil, errors.WithStack(err)
 			}
 
+			if locIn != nil {
+				start = start.In(locIn)
+			}
+
 			date = start.Format("01/02")
 			isEnded = s.now.After(end)
 		} else if event.Start.DateTime != "" {
-			endLoc, err := time.LoadLocation(event.End.TimeZone)
-			if err != nil {
-				return nil, errors.WithStack(err)
-			}
 			end, err := time.ParseInLocation(time.RFC3339, event.End.DateTime, endLoc)
 			if err != nil {
 				return nil, errors.WithStack(err)
@@ -116,13 +160,13 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 				continue
 			}
 
-			startLoc, err := time.LoadLocation(event.Start.TimeZone)
-			if err != nil {
-				return nil, errors.WithStack(err)
-			}
 			start, err := time.ParseInLocation(time.RFC3339, event.Start.DateTime, startLoc)
 			if err != nil {
 				return nil, errors.WithStack(err)
+			}
+
+			if locIn != nil {
+				start = start.In(locIn)
 			}
 
 			date = start.Format("01/02")
