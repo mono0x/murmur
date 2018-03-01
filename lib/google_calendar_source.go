@@ -132,12 +132,15 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 			isEnded bool
 		)
 		if event.Start.Date != "" {
-			end, err := time.ParseInLocation("2006-01-02", event.End.Date, endLoc)
-			if err != nil {
-				return nil, errors.WithStack(err)
-			}
-			if ignoreBorder.After(end) {
-				continue
+			if !event.EndTimeUnspecified {
+				end, err := time.ParseInLocation("2006-01-02", event.End.Date, endLoc)
+				if err != nil {
+					return nil, errors.WithStack(err)
+				}
+				if ignoreBorder.After(end) {
+					continue
+				}
+				isEnded = s.now.After(end)
 			}
 
 			start, err := time.ParseInLocation("2006-01-02", event.Start.Date, startLoc)
@@ -150,14 +153,16 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 			}
 
 			date = start.Format("01/02")
-			isEnded = s.now.After(end)
 		} else if event.Start.DateTime != "" {
-			end, err := time.ParseInLocation(time.RFC3339, event.End.DateTime, endLoc)
-			if err != nil {
-				return nil, errors.WithStack(err)
-			}
-			if ignoreBorder.After(end) {
-				continue
+			if !event.EndTimeUnspecified {
+				end, err := time.ParseInLocation(time.RFC3339, event.End.DateTime, endLoc)
+				if err != nil {
+					return nil, errors.WithStack(err)
+				}
+				if ignoreBorder.After(end) {
+					continue
+				}
+				isEnded = s.now.After(end)
 			}
 
 			start, err := time.ParseInLocation(time.RFC3339, event.Start.DateTime, startLoc)
@@ -170,7 +175,6 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 			}
 
 			date = start.Format("01/02")
-			isEnded = s.now.After(end)
 		}
 
 		var endedMessage string
