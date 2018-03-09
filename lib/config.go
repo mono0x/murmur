@@ -58,7 +58,7 @@ func (c *Config) NewSource() (Source, error) {
 	if f, ok := SourceConfigs[c.Source.Type]; ok {
 		return f(c).NewSource()
 	} else {
-		return nil, errors.New("invalid source type")
+		return nil, errors.Errorf("invalid source type: %v", string(c.Source.Type))
 	}
 }
 
@@ -66,6 +66,6 @@ func (c *Config) NewSink() (Sink, error) {
 	if f, ok := SinkConfigs[c.Sink.Type]; ok {
 		return f(c).NewSink()
 	} else {
-		return nil, errors.New("invalid sink type")
+		return nil, errors.Errorf("invalid sink type: %v", string(c.Sink.Type))
 	}
 }
