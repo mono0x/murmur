@@ -1,4 +1,4 @@
-/_tools/
+/bin/
 /google_client_credentials.json
 /murmur
-/vendor/
+/murmur.linux

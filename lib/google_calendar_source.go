@@ -10,7 +10,7 @@ import (
 	"github.com/pkg/errors"
 	"golang.org/x/oauth2/google"
 	calendar "google.golang.org/api/calendar/v3"
-	"mvdan.cc/xurls"
+	"mvdan.cc/xurls/v2"
 )
 
 type GoogleCalendarSourceConfig struct {

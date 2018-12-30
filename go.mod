@@ -1,0 +1,31 @@
+module github.com/mono0x/murmur
+
+require (
+	cloud.google.com/go v0.34.0
+	github.com/ChimeraCoder/anaconda v0.0.0-20181014153429-fba449f7b405
+	github.com/ChimeraCoder/tokenbucket v0.0.0-20131201223612-c5a927568de7
+	github.com/PuerkitoBio/goquery v1.5.0
+	github.com/andybalholm/cascadia v1.0.0
+	github.com/azr/backoff v0.0.0-20160115115103-53511d3c7330
+	github.com/davecgh/go-spew v1.1.1
+	github.com/dustin/go-jsonpointer v0.0.0-20160814072949-ba0abeacc3dc
+	github.com/dustin/gojson v0.0.0-20160307161227-2e71ec9dd5ad
+	github.com/garyburd/go-oauth v0.0.0-20180319155456-bca2e7f09a17
+	github.com/golang/protobuf v1.2.0
+	github.com/hashicorp/go-cleanhttp v0.5.0
+	github.com/hashicorp/go-retryablehttp v0.0.0-20181214160437-d3a63d3c7206
+	github.com/mmcdole/gofeed v0.0.0-20181010182736-eb870fd61fb8
+	github.com/mmcdole/goxpp v0.0.0-20181012175147-0068e33feabf
+	github.com/pkg/errors v0.8.0
+	github.com/pmezard/go-difflib v1.0.0
+	github.com/stretchr/testify v0.0.0-20181212181745-5b93e2dc01fd
+	golang.org/x/net v0.0.0-20181217023233-e147a9138326
+	golang.org/x/oauth2 v0.0.0-20181203162652-d668ce993890
+	golang.org/x/sync v0.0.0-20181108010431-42b317875d0f
+	golang.org/x/text v0.3.0
+	google.golang.org/api v0.0.0-20181219005141-146117f78c63
+	google.golang.org/appengine v1.3.0
+	gopkg.in/yaml.v2 v2.2.2
+	mvdan.cc/xurls v1.1.0
+	mvdan.cc/xurls/v2 v2.0.0
+)
