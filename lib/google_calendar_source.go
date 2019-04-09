@@ -10,6 +10,7 @@ import (
 	"github.com/pkg/errors"
 	"golang.org/x/oauth2/google"
 	calendar "google.golang.org/api/calendar/v3"
+	"google.golang.org/api/option"
 	"mvdan.cc/xurls/v2"
 )
 
@@ -43,9 +44,11 @@ func (s *GoogleCalendarSource) Items() ([]*Item, error) {
 		return nil, errors.WithStack(err)
 	}
 
-	client := config.Client(context.Background())
+	ctx := context.Background()
 
-	service, err := calendar.New(client)
+	client := config.Client(ctx)
+
+	service, err := calendar.NewService(ctx, option.WithHTTPClient(client))
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
