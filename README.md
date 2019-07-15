@@ -5,7 +5,8 @@
 ## How to Build
 
 ```
- make build
+make setup
+make
 ```
 
 ## Usage
