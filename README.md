@@ -10,21 +10,21 @@
 
 ## Usage
 
-## CLI mode
+### CLI mode
 
 ```
 murmur update --config config.yaml
 ```
 
-## Server mode
+### Server mode
 
-### Server
+#### Server
 
 ```
 murmur serve --listen localhost:8080
 ```
 
-### Client
+#### Client
 
 ```
 curl -X POST http://localhost:8080/update --data @config.yaml
