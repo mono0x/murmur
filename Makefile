@@ -9,6 +9,9 @@ all: deps test build
 setup:
 	GOBIN=$(GOBIN) GO111MODULE=on go install honnef.co/go/tools/cmd/staticcheck
 
+download:
+	GO111MODULE=on go mod download
+
 deps:
 	GO111MODULE=on go mod tidy
 
