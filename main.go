@@ -12,6 +12,7 @@ import (
 	murmur "github.com/mono0x/murmur/lib"
 	"github.com/pkg/errors"
 	"github.com/urfave/cli"
+	"golang.org/x/sync/errgroup"
 )
 
 func run() error {
@@ -37,19 +38,7 @@ func run() error {
 					return err
 				}
 
-				source, err := config.NewSource()
-				if err != nil {
-					return err
-				}
-
-				sink, err := config.NewSink()
-				if err != nil {
-					return err
-				}
-				defer sink.Close()
-
-				notifier := murmur.NewNotifier(source, sink)
-				return notifier.Notify()
+				return murmur.Execute(config)
 			},
 		},
 		{
@@ -62,39 +51,46 @@ func run() error {
 				r := chi.NewRouter()
 				r.Use(middleware.Recoverer)
 
-				r.Post("/update", func(w http.ResponseWriter, r *http.Request) {
+				r.Post("/jobs/exec", func(w http.ResponseWriter, r *http.Request) {
 					config, err := murmur.LoadConfig(r.Body)
 					if err != nil {
-						log.Println(err)
+						log.Printf("%+v\n", err)
 						w.WriteHeader(http.StatusBadRequest)
 						return
 					}
 
-					source, err := config.NewSource()
-					if err != nil {
-						log.Println(err)
-						w.WriteHeader(http.StatusInternalServerError)
-						return
-					}
-
-					sink, err := config.NewSink()
-					if err != nil {
-						log.Println(err)
-						w.WriteHeader(http.StatusInternalServerError)
-						return
-					}
-
-					defer sink.Close()
-
-					notifier := murmur.NewNotifier(source, sink)
-					if err := notifier.Notify(); err != nil {
-						log.Println(err)
+					if err := murmur.Execute(config); err != nil {
+						log.Printf("%+v\n", err)
 						w.WriteHeader(http.StatusInternalServerError)
 						return
 					}
 
 					w.WriteHeader(http.StatusOK)
+				})
 
+				r.Post("/jobs/exec_bulk", func(w http.ResponseWriter, r *http.Request) {
+					configs, err := murmur.LoadBulkConfig(r.Body)
+					if err != nil {
+						log.Printf("%+v\n", err)
+						w.WriteHeader(http.StatusBadRequest)
+						return
+					}
+
+					eg := errgroup.Group{}
+					for _, config := range configs {
+						config := config
+						eg.Go(func() error {
+							return murmur.Execute(config)
+						})
+					}
+
+					if err := eg.Wait(); err != nil {
+						log.Printf("%+v\n", err)
+						w.WriteHeader(http.StatusInternalServerError)
+						return
+					}
+
+					w.WriteHeader(http.StatusOK)
 				})
 
 				listen := c.String("listen")

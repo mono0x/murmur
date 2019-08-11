@@ -54,6 +54,18 @@ func LoadConfig(reader io.Reader) (*Config, error) {
 	return &config, nil
 }
 
+func LoadBulkConfig(reader io.Reader) ([]*Config, error) {
+	data, err := ioutil.ReadAll(reader)
+	if err != nil {
+		return nil, errors.WithStack(err)
+	}
+	var configs []*Config
+	if err := yaml.Unmarshal(data, &configs); err != nil {
+		return nil, errors.WithStack(err)
+	}
+	return configs, nil
+}
+
 func (c *Config) NewSource() (Source, error) {
 	if f, ok := SourceConfigs[c.Source.Type]; ok {
 		return f(c).NewSource()
