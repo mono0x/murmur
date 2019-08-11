@@ -84,16 +84,16 @@ func run() error {
 						return
 					}
 
-					go func() {
-						defer sink.Close()
+					defer sink.Close()
 
-						notifier := murmur.NewNotifier(source, sink)
-						if err := notifier.Notify(); err != nil {
-							log.Println(err)
-						}
-					}()
+					notifier := murmur.NewNotifier(source, sink)
+					if err := notifier.Notify(); err != nil {
+						log.Println(err)
+						w.WriteHeader(http.StatusInternalServerError)
+						return
+					}
 
-					w.WriteHeader(http.StatusAccepted)
+					w.WriteHeader(http.StatusOK)
 
 				})
 
