@@ -2,7 +2,6 @@ package murmur
 
 import (
 	"context"
-	"io/ioutil"
 	"net/url"
 	"strings"
 	"time"
@@ -15,10 +14,11 @@ import (
 )
 
 type GoogleCalendarSourceConfig struct {
-	CalendarId   string `yaml:"calendar_id"`
-	Template     string `yaml:"template"`
-	EndedMessage string `yaml:"ended_message"`
-	TimeZone     string `yaml:"time_zone"`
+	ClientCredentials string `yaml:"client_credentials"`
+	CalendarId        string `yaml:"calendar_id"`
+	Template          string `yaml:"template"`
+	EndedMessage      string `yaml:"ended_message"`
+	TimeZone          string `yaml:"time_zone"`
 }
 
 type GoogleCalendarSource struct {
@@ -34,12 +34,7 @@ func (c *GoogleCalendarSourceConfig) NewSource() (Source, error) {
 }
 
 func (s *GoogleCalendarSource) Items() ([]*Item, error) {
-	json, err := ioutil.ReadFile("google_client_credentials.json")
-	if err != nil {
-		return nil, errors.WithStack(err)
-	}
-
-	config, err := google.JWTConfigFromJSON(json, calendar.CalendarReadonlyScope)
+	config, err := google.JWTConfigFromJSON(([]byte)(s.config.ClientCredentials), calendar.CalendarReadonlyScope)
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
