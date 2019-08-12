@@ -1,9 +1,11 @@
 package murmur
 
 import (
+	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/ChimeraCoder/anaconda"
 	"github.com/pkg/errors"
@@ -24,6 +26,7 @@ type TwitterSink struct {
 func (c *TwitterSinkConfig) NewSink() (Sink, error) {
 	api := anaconda.NewTwitterApiWithCredentials(
 		c.OAuthToken, c.OAuthTokenSecret, c.ConsumerKey, c.ConsumerSecret)
+	api.HttpClient = &http.Client{Timeout: 10 * time.Second}
 	return &TwitterSink{
 		config: c,
 		api:    api,

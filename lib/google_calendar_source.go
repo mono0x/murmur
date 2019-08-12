@@ -42,6 +42,7 @@ func (s *GoogleCalendarSource) Items() ([]*Item, error) {
 	ctx := context.Background()
 
 	client := config.Client(ctx)
+	client.Timeout = 10 * time.Second
 
 	service, err := calendar.NewService(ctx, option.WithHTTPClient(client))
 	if err != nil {

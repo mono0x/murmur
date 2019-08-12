@@ -31,6 +31,7 @@ func (l *discardLogger) Printf(string, ...interface{}) {}
 
 func (s *FeedSource) Items() ([]*Item, error) {
 	client := retryablehttp.NewClient()
+	client.HTTPClient.Timeout = 10 * time.Second
 	client.RetryMax = 1
 	client.Logger = &discardLogger{}
 
