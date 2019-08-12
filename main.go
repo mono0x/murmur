@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"os"
 	"strconv"
-	"time"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
@@ -108,8 +107,6 @@ func run() error {
 
 func main() {
 	log.SetFlags(log.Lshortfile)
-
-	http.DefaultTransport.(*http.Transport).TLSHandshakeTimeout = 30 * time.Second
 
 	if err := run(); err != nil {
 		log.Fatalf("%+v\n", err)
