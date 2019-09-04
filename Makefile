@@ -7,26 +7,26 @@ BINARY=murmur
 all: deps test build
 
 setup:
-	GOBIN=$(GOBIN) GO111MODULE=on $(GO) install honnef.co/go/tools/cmd/staticcheck
+	GOBIN=$(GOBIN) $(GO) install honnef.co/go/tools/cmd/staticcheck
 
 download:
-	GO111MODULE=on $(GO) mod download
+	$(GO) mod download
 
 deps:
-	GO111MODULE=on $(GO) mod tidy
+	$(GO) mod tidy
 
 upgrade-deps:
-	GO111MODULE=on $(GO) get -u
-	GO111MODULE=on $(GO) mod tidy
+	$(GO) get -u
+	$(GO) mod tidy
 
 test:
-	GO111MODULE=on $(GO) mod verify
-	GO111MODULE=on $(GO) vet ./...
-	GO111MODULE=on $(GO) test $(TESTOPTS)
-	GO111MODULE=on $(GOBIN)/staticcheck ./...
+	$(GO) mod verify
+	$(GO) vet ./...
+	$(GO) test $(TESTOPTS)
+	$(GOBIN)/staticcheck ./...
 
 build:
-	GO111MODULE=on $(GO) build -o $(BINARY) $(BUILDOPTS)
+	$(GO) build -o $(BINARY) $(BUILDOPTS)
 
 build-linux:
-	GO111MODULE=on CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GO) build -o $(BINARY).linux $(BUILDOPTS)
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GO) build -o $(BINARY).linux $(BUILDOPTS)
