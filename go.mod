@@ -13,20 +13,20 @@ require (
 	github.com/garyburd/go-oauth v0.0.0-20180319155456-bca2e7f09a17 // indirect
 	github.com/go-chi/chi v4.0.2+incompatible
 	github.com/google/go-cmp v0.3.1 // indirect
-	github.com/hashicorp/go-cleanhttp v0.5.1 // indirect
-	github.com/hashicorp/go-retryablehttp v0.6.0
+	github.com/hashicorp/go-retryablehttp v0.6.2
 	github.com/hashicorp/golang-lru v0.5.3 // indirect
 	github.com/mmcdole/gofeed v1.0.0-beta2
 	github.com/mmcdole/goxpp v0.0.0-20181012175147-0068e33feabf // indirect
 	github.com/pkg/errors v0.8.1
 	github.com/stretchr/testify v1.4.0
 	github.com/urfave/cli v1.21.0
-	golang.org/x/net v0.0.0-20190813141303-74dc4d7220e7 // indirect
+	golang.org/x/net v0.0.0-20190827160401-ba9fcec4b297 // indirect
 	golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45
 	golang.org/x/sync v0.0.0-20190423024810-112230192c58
-	golang.org/x/sys v0.0.0-20190813064441-fde4db37ae7a // indirect
-	golang.org/x/tools v0.0.0-20190822000311-fc82fb2afd64 // indirect
+	golang.org/x/sys v0.0.0-20190904005037-43c01164e931 // indirect
+	golang.org/x/tools v0.0.0-20190903163617-be0da057c5e3 // indirect
 	google.golang.org/api v0.9.0
+	google.golang.org/appengine v1.6.2 // indirect
 	google.golang.org/genproto v0.0.0-20190819201941-24fa4b261c55 // indirect
 	google.golang.org/grpc v1.23.0 // indirect
 	gopkg.in/yaml.v2 v2.2.2
