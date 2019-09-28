@@ -1,10 +1,10 @@
 package murmur
 
 import (
+	"fmt"
 	"io"
 	"io/ioutil"
 
-	"github.com/pkg/errors"
 	yaml "gopkg.in/yaml.v2"
 )
 
@@ -45,11 +45,11 @@ type Config struct {
 func LoadConfig(reader io.Reader) (*Config, error) {
 	data, err := ioutil.ReadAll(reader)
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, fmt.Errorf("%w", err)
 	}
 	var config Config
 	if err := yaml.Unmarshal(data, &config); err != nil {
-		return nil, errors.WithStack(err)
+		return nil, fmt.Errorf("%w", err)
 	}
 	return &config, nil
 }
@@ -57,11 +57,11 @@ func LoadConfig(reader io.Reader) (*Config, error) {
 func LoadBulkConfig(reader io.Reader) ([]*Config, error) {
 	data, err := ioutil.ReadAll(reader)
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, fmt.Errorf("%w", err)
 	}
 	var configs []*Config
 	if err := yaml.Unmarshal(data, &configs); err != nil {
-		return nil, errors.WithStack(err)
+		return nil, fmt.Errorf("%w", err)
 	}
 	return configs, nil
 }
@@ -70,7 +70,7 @@ func (c *Config) NewSource() (Source, error) {
 	if f, ok := SourceConfigs[c.Source.Type]; ok {
 		return f(c).NewSource()
 	} else {
-		return nil, errors.Errorf("invalid source type: %v", string(c.Source.Type))
+		return nil, fmt.Errorf("invalid source type: %v", string(c.Source.Type))
 	}
 }
 
@@ -78,6 +78,6 @@ func (c *Config) NewSink() (Sink, error) {
 	if f, ok := SinkConfigs[c.Sink.Type]; ok {
 		return f(c).NewSink()
 	} else {
-		return nil, errors.Errorf("invalid sink type: %v", string(c.Sink.Type))
+		return nil, fmt.Errorf("invalid sink type: %v", string(c.Sink.Type))
 	}
 }

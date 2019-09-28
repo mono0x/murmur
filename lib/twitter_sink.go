@@ -1,6 +1,8 @@
 package murmur
 
 import (
+	"errors"
+	"fmt"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -8,7 +10,6 @@ import (
 	"time"
 
 	"github.com/ChimeraCoder/anaconda"
-	"github.com/pkg/errors"
 )
 
 type TwitterSinkConfig struct {
@@ -40,7 +41,7 @@ func (s *TwitterSink) Close() {
 func (s *TwitterSink) RecentUrls() ([]string, error) {
 	userId := strings.SplitN(s.config.OAuthToken, "-", 2)[0]
 	if _, err := strconv.ParseInt(userId, 10, 64); err != nil {
-		return nil, errors.WithStack(err)
+		return nil, fmt.Errorf("%w", err)
 	}
 
 	v := url.Values{}
@@ -48,7 +49,7 @@ func (s *TwitterSink) RecentUrls() ([]string, error) {
 	v.Set("count", "200") // TODO: read from the config
 	timeline, err := s.api.GetUserTimeline(v)
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, fmt.Errorf("%w", err)
 	}
 
 	urls := make([]string, 0, len(timeline)) // heuristic optimization
@@ -65,15 +66,16 @@ func (s *TwitterSink) Output(item *Item) error {
 	values := url.Values{}
 
 	if _, err := s.api.PostTweet(item.Summary, values); err != nil {
-		if apiErr, ok := err.(*anaconda.ApiError); ok {
+		var apiErr *anaconda.ApiError
+		if errors.As(err, &apiErr) {
 			for _, err := range apiErr.Decoded.Errors {
 				if err.Code == anaconda.TwitterErrorStatusIsADuplicate {
 					return nil
 				}
 			}
-			return errors.WithStack(apiErr)
+			return fmt.Errorf("%w", apiErr)
 		} else {
-			return errors.WithStack(err)
+			return fmt.Errorf("%w", err)
 		}
 	}
 	return nil

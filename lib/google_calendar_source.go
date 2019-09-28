@@ -2,11 +2,11 @@ package murmur
 
 import (
 	"context"
+	"fmt"
 	"net/url"
 	"strings"
 	"time"
 
-	"github.com/pkg/errors"
 	"golang.org/x/oauth2/google"
 	calendar "google.golang.org/api/calendar/v3"
 	"google.golang.org/api/option"
@@ -36,7 +36,7 @@ func (c *GoogleCalendarSourceConfig) NewSource() (Source, error) {
 func (s *GoogleCalendarSource) Items() ([]*Item, error) {
 	config, err := google.JWTConfigFromJSON(([]byte)(s.config.ClientCredentials), calendar.CalendarReadonlyScope)
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, fmt.Errorf("%w", err)
 	}
 
 	ctx := context.Background()
@@ -46,14 +46,14 @@ func (s *GoogleCalendarSource) Items() ([]*Item, error) {
 
 	service, err := calendar.NewService(ctx, option.WithHTTPClient(client))
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, fmt.Errorf("%w", err)
 	}
 
 	updatedMin := s.now.AddDate(0, 0, -1).Format(time.RFC3339)
 
 	events, err := service.Events.List(s.config.CalendarId).UpdatedMin(updatedMin).MaxResults(100).SingleEvents(true).Do()
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, fmt.Errorf("%w", err)
 	}
 
 	return s.itemsFromEvents(events)
@@ -62,7 +62,7 @@ func (s *GoogleCalendarSource) Items() ([]*Item, error) {
 func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item, error) {
 	loc, err := time.LoadLocation(events.TimeZone)
 	if err != nil {
-		return nil, errors.WithStack(err)
+		return nil, fmt.Errorf("%w", err)
 	}
 
 	var locIn *time.Location
@@ -70,7 +70,7 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 		var err error
 		locIn, err = time.LoadLocation(s.config.TimeZone)
 		if err != nil {
-			return nil, errors.WithStack(err)
+			return nil, fmt.Errorf("%w", err)
 		}
 	}
 
@@ -98,7 +98,7 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 		if timeZone != "" {
 			u, err := url.Parse(link)
 			if err != nil {
-				return nil, errors.WithStack(err)
+				return nil, fmt.Errorf("%w", err)
 			}
 			query := u.Query()
 			query.Set("ctz", timeZone)
@@ -110,7 +110,7 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 		if event.Start.TimeZone != "" {
 			startLoc, err = time.LoadLocation(event.Start.TimeZone)
 			if err != nil {
-				return nil, errors.WithStack(err)
+				return nil, fmt.Errorf("%w", err)
 			}
 		} else {
 			startLoc = loc
@@ -120,7 +120,7 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 		if event.End.TimeZone != "" {
 			endLoc, err = time.LoadLocation(event.End.TimeZone)
 			if err != nil {
-				return nil, errors.WithStack(err)
+				return nil, fmt.Errorf("%w", err)
 			}
 		} else {
 			endLoc = loc
@@ -134,7 +134,7 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 			if !event.EndTimeUnspecified {
 				end, err := time.ParseInLocation("2006-01-02", event.End.Date, endLoc)
 				if err != nil {
-					return nil, errors.WithStack(err)
+					return nil, fmt.Errorf("%w", err)
 				}
 				if ignoreBorder.After(end) {
 					continue
@@ -144,7 +144,7 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 
 			start, err := time.ParseInLocation("2006-01-02", event.Start.Date, startLoc)
 			if err != nil {
-				return nil, errors.WithStack(err)
+				return nil, fmt.Errorf("%w", err)
 			}
 
 			if locIn != nil {
@@ -156,7 +156,7 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 			if !event.EndTimeUnspecified {
 				end, err := time.ParseInLocation(time.RFC3339, event.End.DateTime, endLoc)
 				if err != nil {
-					return nil, errors.WithStack(err)
+					return nil, fmt.Errorf("%w", err)
 				}
 				if ignoreBorder.After(end) {
 					continue
@@ -166,7 +166,7 @@ func (s *GoogleCalendarSource) itemsFromEvents(events *calendar.Events) ([]*Item
 
 			start, err := time.ParseInLocation(time.RFC3339, event.Start.DateTime, startLoc)
 			if err != nil {
-				return nil, errors.WithStack(err)
+				return nil, fmt.Errorf("%w", err)
 			}
 
 			if locIn != nil {

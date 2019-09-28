@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -9,7 +10,6 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	murmur "github.com/mono0x/murmur/lib"
-	"github.com/pkg/errors"
 	"github.com/urfave/cli"
 	"golang.org/x/sync/errgroup"
 )
@@ -28,7 +28,7 @@ func run() error {
 				configFile := c.String("config")
 				f, err := os.Open(configFile)
 				if err != nil {
-					return errors.WithStack(err)
+					return fmt.Errorf("%w", err)
 				}
 				defer f.Close()
 
@@ -109,6 +109,6 @@ func main() {
 	log.SetFlags(log.Lshortfile)
 
 	if err := run(); err != nil {
-		log.Fatalf("%+v\n", err)
+		log.Fatalf("%v\n", err)
 	}
 }
