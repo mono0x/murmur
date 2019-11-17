@@ -3,7 +3,7 @@ module github.com/mono0x/murmur
 go 1.13
 
 require (
-	cloud.google.com/go v0.47.0 // indirect
+	cloud.google.com/go v0.48.0 // indirect
 	github.com/ChimeraCoder/anaconda v2.0.0+incompatible
 	github.com/ChimeraCoder/tokenbucket v0.0.0-20131201223612-c5a927568de7 // indirect
 	github.com/PuerkitoBio/goquery v1.5.0 // indirect
@@ -22,17 +22,17 @@ require (
 	github.com/mmcdole/goxpp v0.0.0-20181012175147-0068e33feabf // indirect
 	github.com/stretchr/testify v1.4.0
 	github.com/urfave/cli v1.22.1
-	go.opencensus.io v0.22.1 // indirect
-	golang.org/x/net v0.0.0-20191101175033-0deb6923b6d9 // indirect
+	go.opencensus.io v0.22.2 // indirect
+	golang.org/x/net v0.0.0-20191116160921-f9c825593386 // indirect
 	golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45
 	golang.org/x/sync v0.0.0-20190911185100-cd5d95a43a6e
-	golang.org/x/sys v0.0.0-20191104094858-e8c54fb511f6 // indirect
-	golang.org/x/tools v0.0.0-20191101200257-8dbcdeb83d3f // indirect
-	google.golang.org/api v0.13.0
+	golang.org/x/sys v0.0.0-20191115151921-52ab43148777 // indirect
+	golang.org/x/tools v0.0.0-20191116214431-80313e1ba718 // indirect
+	google.golang.org/api v0.14.0
 	google.golang.org/appengine v1.6.5 // indirect
-	google.golang.org/genproto v0.0.0-20191028173616-919d9bdd9fe6 // indirect
-	google.golang.org/grpc v1.24.0 // indirect
-	gopkg.in/yaml.v2 v2.2.4
+	google.golang.org/genproto v0.0.0-20191115221424-83cc0476cb11 // indirect
+	google.golang.org/grpc v1.25.1 // indirect
+	gopkg.in/yaml.v2 v2.2.5
 	honnef.co/go/tools v0.0.1-2019.2.3
 	mvdan.cc/xurls/v2 v2.1.0
 )
