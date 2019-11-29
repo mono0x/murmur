@@ -1,8 +1,8 @@
 steps:
-- name: gcr.io/cloud-builders/docker
-  args: ['build', '-t', 'gcr.io/${PROJECT_ID}/murmur:${SHORT_SHA}', '.']
-- name: gcr.io/cloud-builders/docker
-  args: ['push', 'gcr.io/${PROJECT_ID}/murmur']
+- name: 'gcr.io/kaniko-project/executor:latest'
+  args:
+  - '--destination=gcr.io/${PROJECT_ID}/murmur:${SHORT_SHA}'
+  - --cache=true
 
 - name: gcr.io/cloud-builders/gcloud
   args: ['beta', 'run', 'deploy', 'murmur', '--platform', 'managed', '--image', 'gcr.io/${PROJECT_ID}/murmur:${SHORT_SHA}', '--region', 'us-central1']
