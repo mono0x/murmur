@@ -3,7 +3,6 @@ module github.com/mono0x/murmur
 go 1.14
 
 require (
-	cloud.google.com/go v0.58.0 // indirect
 	github.com/ChimeraCoder/anaconda v2.0.0+incompatible
 	github.com/ChimeraCoder/tokenbucket v0.0.0-20131201223612-c5a927568de7 // indirect
 	github.com/PuerkitoBio/goquery v1.5.1 // indirect
@@ -19,17 +18,14 @@ require (
 	github.com/mmcdole/gofeed v1.0.0
 	github.com/stretchr/testify v1.4.0
 	github.com/urfave/cli v1.22.4
-	go.opencensus.io v0.22.4 // indirect
-	golang.org/x/net v0.0.0-20200602114024-627f9648deb9 // indirect
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
-	golang.org/x/sync v0.0.0-20200317015054-43a5402ce75a
-	golang.org/x/sys v0.0.0-20200622214017-ed371f2e16b4 // indirect
-	golang.org/x/text v0.3.3 // indirect
-	golang.org/x/tools v0.0.0-20200623045635-ff88973b1e4e // indirect
-	google.golang.org/api v0.28.0
-	google.golang.org/genproto v0.0.0-20200623002339-fbb79eadd5eb // indirect
-	google.golang.org/grpc v1.30.0 // indirect
+	golang.org/x/sync v0.0.0-20200625203802-6e8e738ad208
+	golang.org/x/sys v0.0.0-20200806125547-5acd03effb82 // indirect
+	golang.org/x/tools v0.0.0-20200806022845-90696ccdc692 // indirect
+	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
+	google.golang.org/api v0.30.0
+	google.golang.org/genproto v0.0.0-20200806141610-86f49bd18e98 // indirect
 	gopkg.in/yaml.v2 v2.3.0
-	honnef.co/go/tools v0.0.1-2020.1.4
+	honnef.co/go/tools v0.0.1-2020.1.5
 	mvdan.cc/xurls/v2 v2.2.0
 )
