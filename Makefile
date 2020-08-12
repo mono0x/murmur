@@ -1,7 +1,7 @@
 GO=go
 GOBIN=$(PWD)/bin
 TESTOPTS=-v -race ./...
-BUILDOPTS=-tags netgo -installsuffix netgo -ldflags "-w -s -extldflags -static"
+BUILDOPTS=-tags netgo,timetzdata -installsuffix netgo -ldflags "-w -s -extldflags -static"
 BINARY=murmur
 
 all: deps test build
