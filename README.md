@@ -1,6 +1,6 @@
 # murmur
 
-[![Build Status](https://travis-ci.org/mono0x/murmur.svg?branch=master)](https://travis-ci.org/mono0x/murmur)
+![test](https://github.com/mono0x/murmur/workflows/test/badge.svg)
 
 ## How to Build
 
