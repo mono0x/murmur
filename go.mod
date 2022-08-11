@@ -1,6 +1,6 @@
 module github.com/mono0x/murmur
 
-go 1.18
+go 1.19
 
 require (
 	github.com/ChimeraCoder/anaconda v2.0.0+incompatible

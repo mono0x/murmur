@@ -3,7 +3,6 @@ package murmur
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
 
 	yaml "gopkg.in/yaml.v2"
 )
@@ -43,7 +42,7 @@ type Config struct {
 }
 
 func LoadConfig(reader io.Reader) (*Config, error) {
-	data, err := ioutil.ReadAll(reader)
+	data, err := io.ReadAll(reader)
 	if err != nil {
 		return nil, fmt.Errorf("%w", err)
 	}
@@ -55,7 +54,7 @@ func LoadConfig(reader io.Reader) (*Config, error) {
 }
 
 func LoadBulkConfig(reader io.Reader) ([]*Config, error) {
-	data, err := ioutil.ReadAll(reader)
+	data, err := io.ReadAll(reader)
 	if err != nil {
 		return nil, fmt.Errorf("%w", err)
 	}
