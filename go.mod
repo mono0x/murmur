@@ -6,7 +6,7 @@ require (
 	github.com/ChimeraCoder/anaconda v2.0.0+incompatible
 	github.com/go-chi/chi v4.1.2+incompatible
 	github.com/hashicorp/go-retryablehttp v0.7.1
-	github.com/mmcdole/gofeed v1.1.3
+	github.com/mmcdole/gofeed v1.2.0
 	github.com/stretchr/testify v1.8.1
 	github.com/urfave/cli v1.22.10
 	golang.org/x/oauth2 v0.0.0-20221014153046-6fdb5e3db783
