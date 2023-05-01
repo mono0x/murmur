@@ -7,8 +7,8 @@ require (
 	github.com/go-chi/chi v4.1.2+incompatible
 	github.com/hashicorp/go-retryablehttp v0.7.1
 	github.com/mmcdole/gofeed v1.1.3
-	github.com/stretchr/testify v1.8.1
-	github.com/urfave/cli v1.22.10
+	github.com/stretchr/testify v1.8.2
+	github.com/urfave/cli v1.22.13
 	golang.org/x/oauth2 v0.0.0-20221014153046-6fdb5e3db783
 	golang.org/x/sync v0.1.0
 	google.golang.org/api v0.105.0
@@ -20,7 +20,7 @@ require (
 require (
 	cloud.google.com/go/compute v1.13.0 // indirect
 	cloud.google.com/go/compute/metadata v0.2.2 // indirect
-	github.com/BurntSushi/toml v1.1.0 // indirect
+	github.com/BurntSushi/toml v1.2.1 // indirect
 	github.com/ChimeraCoder/tokenbucket v0.0.0-20131201223612-c5a927568de7 // indirect
 	github.com/PuerkitoBio/goquery v1.8.0 // indirect
 	github.com/andybalholm/cascadia v1.3.1 // indirect
